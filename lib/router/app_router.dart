@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../auth/presentation/forgot_password/forgot_password_page.dart';
-import '../auth/presentation/home/home_page.dart';
-import '../auth/presentation/sign_in/sign_in_page.dart';
-import '../auth/presentation/sign_up/sign_up_page.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+import '../core/logger/talker_provider.dart';
+import '../features/auth/presentation/forgot_password/forgot_password_page.dart';
+import '../features/auth/presentation/home/home_page.dart';
+import '../features/auth/presentation/sign_in/sign_in_page.dart';
+import '../features/auth/presentation/sign_up/sign_up_page.dart';
 import 'router_notifier.dart';
 
 part 'app_router.g.dart';
@@ -14,7 +16,12 @@ GoRouter appRouter(Ref ref) {
   // RouterNotifier のインスタンスを取得
   final notifier = ref.watch(routerProvider.notifier);
 
+  final talker = ref.watch(talkerProvider);
+
   return GoRouter(
+    observers: [
+      TalkerRouteObserver(talker),
+    ],
     // デバッグ時にルート遷移をコンソール出力する
     debugLogDiagnostics: kDebugMode,
 

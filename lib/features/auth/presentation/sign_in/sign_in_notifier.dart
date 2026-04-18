@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+import '../../../../core/logger/talker_provider.dart';
 import '../../service/auth_service.dart';
 import 'sign_in_state.dart';
 
@@ -9,6 +11,8 @@ part 'sign_in_notifier.g.dart';
 class SignInNotifier extends _$SignInNotifier {
   // Notifier は Service だけを知る（Repository を直接知らない）
   AuthService get _service => ref.read(authServiceProvider);
+  // Talker を Notifier 内で使う
+  Talker get _talker => ref.read(talkerProvider);
 
   @override
   SignInState build() => const SignInState();
@@ -32,13 +36,16 @@ class SignInNotifier extends _$SignInNotifier {
         email: state.email.trim(),
         password: state.password,
       );
-      // 成功 → authStateChanges() が通知 → AuthGate が切り替え
-    } on FirebaseAuthException catch (e) {
+      _talker.info('サインイン成功: ${state.email.trim()}');
+    } on FirebaseAuthException catch (e, stack) {
+      // handle() でエラーとスタックトレースを一緒に記録できる
+      _talker.handle(e, stack, 'SignIn FirebaseAuthException: ${e.code}');
       state = state.copyWith(
         isLoading: false,
         errorMessage: _toMessage(e.code),
       );
-    } catch (e) {
+    } catch (e, stack) {
+      _talker.critical('SignIn 予期しないエラー', e, stack);
       state = state.copyWith(
         isLoading: false,
         errorMessage: '予期しないエラーが発生しました',

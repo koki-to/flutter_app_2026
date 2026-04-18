@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../router/router_notifier.dart';
+import '../../../../router/router_notifier.dart';
 import 'sign_in_notifier.dart';
 
 class SignInPage extends ConsumerWidget {

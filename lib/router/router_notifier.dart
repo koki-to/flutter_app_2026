@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../auth/providers/auth_providers.dart';
+import '../features/auth/providers/auth_providers.dart';
 
 part 'router_notifier.g.dart';
 
@@ -80,12 +80,6 @@ class RouterNotifier extends _$RouterNotifier implements Listenable {
     final isOnProtectedRoute =
         _protectedRoutes.any((r) => currentLocation.startsWith(r));
 
-    debugPrint(
-      'redirect: '
-      'isLoggedIn=$isLoggedIn, '
-      'isOnAuthRoute=$isOnAuthRoute, '
-      'isOnProtectedRoute=$isOnProtectedRoute',
-    );
     // ─── リダイレクトルール ─────────────────────────────────
     //
     // ① ログイン済みで認証画面にいる → ホームへ
