@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../router/router_notifier.dart';
 import 'sign_in_notifier.dart';
-import '../sign_up/sign_up_page.dart';
-import '../forgot_password/forgot_password_page.dart';
 
 class SignInPage extends ConsumerWidget {
   const SignInPage({super.key});
@@ -68,11 +68,8 @@ class SignInPage extends ConsumerWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const ForgotPasswordPage(),
-                      ),
-                    ),
+                    // ✅ go_router で遷移（Navigator.push ではない）
+                    onPressed: () => context.push(AppRoutes.forgotPassword),
                     child: const Text('パスワードを忘れた場合'),
                   ),
                 ),
@@ -87,9 +84,7 @@ class SignInPage extends ConsumerWidget {
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
+                              color: Colors.white, strokeWidth: 2),
                         )
                       : const Text('ログイン', style: TextStyle(fontSize: 16)),
                 ),
@@ -99,9 +94,8 @@ class SignInPage extends ConsumerWidget {
                   children: [
                     const Text('アカウントをお持ちでない方は'),
                     TextButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const SignUpPage()),
-                      ),
+                      // ✅ go_router で遷移
+                      onPressed: () => context.push(AppRoutes.signUp),
                       child: const Text('新規登録'),
                     ),
                   ],
@@ -133,10 +127,8 @@ class _ErrorCard extends StatelessWidget {
           Icon(Icons.error_outline, color: Colors.red.shade700, size: 20),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
-              message,
-              style: TextStyle(color: Colors.red.shade700, fontSize: 14),
-            ),
+            child: Text(message,
+                style: TextStyle(color: Colors.red.shade700, fontSize: 14)),
           ),
         ],
       ),

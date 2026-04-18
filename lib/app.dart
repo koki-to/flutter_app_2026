@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'features/auth/presentation/auth_gate/auth_gate_page.dart';
+import 'features/router/app_router.dart';
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    // ★ appRouterProvider を watch する
+    // → RouterNotifier が更新されても GoRouter インスタンスは
+    //   再生成されない（keepAlive: true のため）
+    final router = ref.watch(appRouterProvider);
+    return MaterialApp.router(
       title: 'Flutter Auth',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorSchemeSeed: Colors.indigo,
         useMaterial3: true,
       ),
-      home: const AuthGate(),
+      routerConfig: router,
     );
   }
 }

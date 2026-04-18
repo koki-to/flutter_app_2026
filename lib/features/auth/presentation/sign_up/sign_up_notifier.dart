@@ -34,7 +34,6 @@ class SignUpNotifier extends _$SignUpNotifier {
       );
       // 成功 → authStateChanges() が更新 → AuthGate が HomePage に切り替える
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       state = state.copyWith(
         isLoading: false,
         errorMessage: _toMessage(e.code),
